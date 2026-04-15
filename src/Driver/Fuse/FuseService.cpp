@@ -125,6 +125,10 @@ namespace VeraCrypt
 			cfg->set_gid = 1;
 			cfg->uid = FuseService::GetUserId();
 			cfg->gid = FuseService::GetGroupId();
+
+			cfg->use_ino = 1;
+			cfg->entry_timeout = 86400.0;
+			cfg->attr_timeout = 1.0;
 		}
 
 		return fuse_service_init_common ();
@@ -475,12 +479,12 @@ namespace VeraCrypt
 		catch (std::exception &e)
 		{
 			SystemLog::WriteException (e);
-			return -EINTR;
+			return -EIO;
 		}
 		catch (...)
 		{
 			SystemLog::WriteException (UnknownException (SRC_POS));
-			return -EINTR;
+			return -EIO;
 		}
 	}
 
